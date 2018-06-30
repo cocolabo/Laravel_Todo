@@ -1,78 +1,75 @@
 @extends('layouts.app')
-
+@section('title','Laravel Todo App')
 @section('content')
+    <div class="container">
+        <div class="row justify-content-md-center mt-5">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="card">
+                    <div class="card-header">
+                        Task Form
+                    </div>
+                    <div class="card-body">
+{{--                        @include('common.errors')--}}
 
-    <!-- Bootstrapの定形コード… -->
+                        {!! Form::open(['url' => 'task']) !!}
+                        @csrf
 
-    <div class="panel-body">
-        <!-- バリデーションエラーの表示 -->
-    @include('common.errors')
+                        <div class="form-group">
+                            <label for="task" class="col-sm-3 control-label">Task</label>
+                            <div class="col-sm-6">
+                                {!!Form::text('task_name', null, [
+                                                            'class' => 'form-control' . ( $errors->has('task_name') ? ' is-invalid' : '' ),
+                                                            'placeholder'=>'write task.'
+                                                             ])!!}
 
-    <!-- 新タスクフォーム -->
-        <form action="{{ url('task') }}" method="POST" class="form-horizontal">
-        {{ csrf_field() }}
-
-        <!-- タスク名 -->
-            <div class="form-group">
-                <label for="task" class="col-sm-3 control-label">タスク</label>
-
-                <div class="col-sm-6">
-                    <input type="text" name="name" id="task-name" class="form-control">
+                                @if ($errors->has('task_name'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('task_name') }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-6">
+                                {!! Form::submit('Add', ['class' => 'btn btn-primary']) !!}
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
                 </div>
-            </div>
-
-            <!-- タスク追加ボタン -->
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-default">
-                        <i class="fa fa-plus"></i> タスク追加
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- 現在のタスク -->
-    @if (count($tasks) > 0)
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                現在のタスク
-            </div>
-
-            <div class="panel-body">
-                <table class="table table-striped task-table">
-
-                    <!-- テーブルヘッダ -->
-                    <thead>
-                    <th>Task</th>
-                    <th>&nbsp;</th>
-                    </thead>
-
-                    <!-- テーブル本体 -->
-                    <tbody>
-                    @foreach ($tasks as $task)
-                        <tr>
-                            <!-- タスク名 -->
-                            <td class="table-text">
-                                <div>{{ $task->name }}</div>
-                            </td>
-
-                            <!-- 削除ボタン -->
-                            <td>
-                                <form action="{{ url('task/'.$task->id) }}" method="POST">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fa fa-trash"></i> 削除
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
             </div>
         </div>
+
+        @if (count($tasks) > 0)
+            <div class="row justify-content-md-center mt-5">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="card">
+                        <div class="card-header">
+                            Task List
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped task-table">
+                                <thead>
+                                <th>Task</th>
+                                <th>&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                @foreach ($tasks as $task)
+                                    <tr>
+                                        <td class="table-text">{{ $task->name }}</td>
+                                        <td>
+                                        {!! Form::open(['url' => url('task/'.$task->id)]) !!}
+                                        @csrf
+                                        @method('DELETE')
+                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
     @endif
 @endsection
