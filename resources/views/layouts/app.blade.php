@@ -1,18 +1,35 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="{{ app()->getLocale() }}">
 <head>
-    <title>Laravel Quickstart - Basic</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSSとJavaScript -->
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>@yield('title')</title>
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-
 <body>
-<div class="container">
-    <nav class="navbar navbar-default">
-        <!-- ナビバーの内容 -->
+<div id="app">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Branding Image -->
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    @yield('title')
+                </a>
+            </div>
+        </div>
     </nav>
+
+    @yield('content')
 </div>
 
-@yield('content')
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

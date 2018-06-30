@@ -33,7 +33,7 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
+            'task_name' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -43,7 +43,7 @@ class TaskController extends Controller
         }
 
         $task = new Task;
-        $task->name = $request->name;
+        $task->name = $request->task_name;
         $task->save();
 
         return redirect('/');
