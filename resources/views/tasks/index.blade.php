@@ -6,20 +6,17 @@
             <div class="col-md-8 col-md-offset-2">
                 <div class="card">
                     <div class="card-header">
-                        Task Form
+                        フォーム
                     </div>
                     <div class="card-body">
-{{--                        @include('common.errors')--}}
-
                         {!! Form::open(['url' => 'task']) !!}
                         @csrf
-
                         <div class="form-group">
-                            <label for="task" class="col-sm-3 control-label">Task</label>
+                            <label for="task" class="col-sm-3 control-label">タスク追加</label>
                             <div class="col-sm-6">
                                 {!!Form::text('task_name', null, [
                                                             'class' => 'form-control' . ( $errors->has('task_name') ? ' is-invalid' : '' ),
-                                                            'placeholder'=>'write task.'
+                                                            'placeholder'=>'タスク名を入力してください'
                                                              ])!!}
 
                                 @if ($errors->has('task_name'))
@@ -31,7 +28,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6">
-                                {!! Form::submit('Add', ['class' => 'btn btn-primary']) !!}
+                                {!! Form::submit('追加', ['class' => 'btn btn-primary']) !!}
                             </div>
                         </div>
                         {!! Form::close() !!}
@@ -45,12 +42,12 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="card">
                         <div class="card-header">
-                            Task List
+                            タスク一覧
                         </div>
                         <div class="card-body">
                             <table class="table table-striped task-table">
                                 <thead>
-                                <th>Task</th>
+                                <th>タスク名</th>
                                 <th>&nbsp;</th>
                                 </thead>
                                 <tbody>
@@ -58,10 +55,10 @@
                                     <tr>
                                         <td class="table-text">{{ $task->name }}</td>
                                         <td>
-                                        {!! Form::open(['url' => url('task/'.$task->id)]) !!}
-                                        @csrf
-                                        @method('DELETE')
-                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                            {!! Form::open(['url' => url('task/'.$task->id)]) !!}
+                                            @csrf
+                                            @method('DELETE')
+                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                         </td>
                                     </tr>
                                 @endforeach
